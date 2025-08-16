@@ -7,12 +7,11 @@ import lombok.*;
 @Table(name = "stores")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class Store {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name; // 가게 이름
-    private String category; // 음식, 잡화, 의류 등
+    private String name;        // 가게 이름
+    private String category;    // 음식/의류/잡화 등
     private String description; // 가게 소개
 
     @ManyToOne(fetch = FetchType.LAZY)
