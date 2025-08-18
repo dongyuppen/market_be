@@ -75,6 +75,7 @@ public class StoreService {
         p.setCount(p.getCount() + Math.max(delta, 1));
     }
 
+    @Transactional(readOnly = true)
     public List<PopularStoreResponse> topPopular(int limit) {
         return popularityRepository.findTop10ByOrderByCountDesc().stream()
                 .limit(limit)
