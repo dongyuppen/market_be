@@ -2,6 +2,7 @@ package com.example.market.controller;
 
 import com.example.market.dto.PopularStoreResponse;
 import com.example.market.dto.StoreCreateRequest;
+import com.example.market.dto.StoreResponse;
 import com.example.market.dto.StoreUpdateRequest;
 import com.example.market.entity.Store;
 import com.example.market.service.StoreService;
@@ -19,13 +20,17 @@ public class StoreController {
 
     // 가게 전체 조회 (시장별)
     @GetMapping
-    public List<Store> findByMarket(@RequestParam Long marketId) {
-        return storeService.findByMarket(marketId);
+    public List<StoreResponse> findByMarket(@RequestParam Long marketId) {
+        return storeService.findByMarket(marketId).stream()
+                .map(StoreResponse::from)
+                .toList();
     }
 
     // 가게 단일 조회
     @GetMapping("/{id}")
-    public Store findOne(@PathVariable Long id) { return storeService.findById(id); }
+    public StoreResponse findOne(@PathVariable Long id) {
+        return StoreResponse.from(storeService.findById(id));
+    }
 
     // 가게 등록 (관리자용)
     @PostMapping

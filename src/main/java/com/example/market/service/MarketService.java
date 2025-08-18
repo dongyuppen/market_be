@@ -7,13 +7,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service @RequiredArgsConstructor
+@Service
+@RequiredArgsConstructor
 public class MarketService {
     private final MarketRepository marketRepository;
 
-    public List<Market> findAll() { return marketRepository.findAll(); }
+    public List<Market> findAll() {
+        return marketRepository.findAll();
+    }
+
     public Market findById(Long id) {
-        return marketRepository.findById(id)
+        return marketRepository.findByIdWithStores(id)
                 .orElseThrow(() -> new IllegalArgumentException("Market not found: " + id));
     }
 }
