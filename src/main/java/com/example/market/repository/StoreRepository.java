@@ -12,7 +12,7 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     // 시장 전체 가게
     List<Store> findByMarket_Id(Long marketId);
 
-    // [추가] 시장 + 카테고리(대/소문자 무시) 필터
+    // 시장 + 카테고리(대/소문자 무시) 필터
     List<Store> findByMarket_IdAndCategoryContainingIgnoreCase(Long marketId, String category);
 
     // 키워드(가게명/카테고리/설명) 검색
@@ -24,7 +24,7 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     """)
     List<Store> search(@Param("keyword") String keyword);
 
-    // [추가] 시장 한정 키워드 검색
+    // 시장 한정 키워드 검색
     @Query("""
         select s from Store s
         where s.market.id = :marketId
@@ -35,4 +35,11 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
           )
     """)
     List<Store> searchInMarket(@Param("marketId") Long marketId, @Param("keyword") String keyword);
+
+    // ✅ 시장 이름 like 검색 (예: "모란시장")
+    @Query("""
+        select s from Store s
+        where s.market.name like concat('%', :marketName, '%')
+    """)
+    List<Store> findByMarketNameLike(@Param("marketName") String marketName);
 }

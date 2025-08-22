@@ -15,8 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service @RequiredArgsConstructor
+@Service
+@RequiredArgsConstructor
 public class StoreService {
+
     private final StoreRepository storeRepository;
     private final MarketRepository marketRepository;
     private final StorePopularityRepository popularityRepository;
@@ -71,7 +73,9 @@ public class StoreService {
     public void increasePopularity(Long storeId, int delta) {
         Store store = findById(storeId);
         StorePopularity p = popularityRepository.findByStore(store)
-                .orElseGet(() -> popularityRepository.save(StorePopularity.builder().store(store).count(0).build()));
+                .orElseGet(() -> popularityRepository.save(
+                        StorePopularity.builder().store(store).count(0).build()
+                ));
         p.setCount(p.getCount() + Math.max(delta, 1));
     }
 
@@ -84,6 +88,13 @@ public class StoreService {
                         p.getStore().getName(),
                         p.getStore().getCategory(),
                         p.getCount()
-                )).toList();
+                ))
+                .toList();
+    }
+
+    // ✅ 추가: 시장 이름 like 검색 (예: "모란시장")
+    @Transactional(readOnly = true)
+    public List<Store> findByMarketNameLike(String marketName) {
+        return storeRepository.findByMarketNameLike(marketName);
     }
 }

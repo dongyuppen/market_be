@@ -3,8 +3,10 @@ plugins {
     id 'org.springframework.boot' version '3.5.4'
     id 'io.spring.dependency-management' version '1.1.7'
 }
+
 ext {
     springAiVersion = "1.0.1"
+    lc4j = "0.35.0"
 }
 
 group = 'com.example'
@@ -18,24 +20,39 @@ java {
 
 repositories {
     mavenCentral()
-    maven { url 'https://repo.spring.io/milestone' }
+    maven { url 'https://repo.spring.io/milestone' } // Spring AI
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-validation")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-data-redis")
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0") // Swagger UI
-    implementation 'org.springframework.ai:spring-ai-starter-model-openai:1.0.1'
-    runtimeOnly("com.mysql:mysql-connector-j")
-    compileOnly("org.projectlombok:lombok:1.18.32")
-    annotationProcessor("org.projectlombok:lombok:1.18.32")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    // --- Spring Boot / Data ---
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-validation"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+    implementation "org.springframework.boot:spring-boot-starter-data-redis"
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0"
+
+    // --- Spring AI (OpenAI) ---
+    implementation "org.springframework.ai:spring-ai-starter-model-openai:${springAiVersion}"
+
+    // --- LangChain4j 0.35.x (※ core 포함) ---
+    implementation "dev.langchain4j:langchain4j-core:${lc4j}"
+    implementation "dev.langchain4j:langchain4j:${lc4j}"
+    implementation "dev.langchain4j:langchain4j-open-ai:${lc4j}"
+
+    // --- DB Driver ---
+    runtimeOnly "com.mysql:mysql-connector-j"
+
+    // --- Lombok ---
+    compileOnly "org.projectlombok:lombok:1.18.32"
+    annotationProcessor "org.projectlombok:lombok:1.18.32"
+
+    // --- Test ---
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
 }
+
 dependencyManagement {
     imports {
-        mavenBom "org.springframework.ai:spring-ai-bom:$springAiVersion"
+        mavenBom "org.springframework.ai:spring-ai-bom:${springAiVersion}"
     }
 }
 
