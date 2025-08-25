@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    # 운영 DB는 환경변수로 주입 권장
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none              # 운영은 Hibernate가 스키마 수정 안 함
+    open-in-view: false
+    defer-datasource-initialization: true   # (선택) data.sql을 쓴다면 안전하게 뒤로
+
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc.time_zone: Asia/Seoul
+
+  sql:
+    init:
+      mode: always                # 배포 시 schema.sql 실행해서 DDL 반영
+      encoding: UTF-8
