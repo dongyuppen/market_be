@@ -25,3 +25,4 @@ spring:
     init:
       mode: always              # data.sql 항상 실행
       encoding: UTF-8
+
