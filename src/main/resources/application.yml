@@ -1,0 +1,27 @@
+spring:
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      base-url: https://api.openai.com/v1
+      model: gpt-4o
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/market_1?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update          # 개발: update, 운영: validate 권장
+    open-in-view: false
+    defer-datasource-initialization: true   # ✅ JPA 스키마 생성 후 data.sql 실행
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc.time_zone: Asia/Seoul
+
+  sql:
+    init:
+      mode: always              # data.sql 항상 실행
+      encoding: UTF-8
